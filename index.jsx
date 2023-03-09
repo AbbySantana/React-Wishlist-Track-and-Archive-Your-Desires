@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import App from './src/App';
 
 ReactDOM.render(
-  <div> My Wishlist from REACT </div>,
+  <App />,
   document.getElementById('root'),
 );
