@@ -1,35 +1,35 @@
 import React from 'react';
-import classNames from 'classnames';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
+import WishItem from '../WishItem';
 
 // eslint-disable-next-line react/function-component-definition
-const WishList = ({ wishes }) => (
+const WishList = ({ wishes, onWishesChange }) => (
   <ul className="wish-list">
     {wishes.map(({ text, done }, i) => (
-      <li
+      <WishItem
+        text={text}
+        done={done}
+        id={`wish${i}`}
         key={text}
-        className={classNames(
-          'wish-list__item',
-          { 'wish-list__item--done': done },
-        )}
-      >
-        <input id={`wish${i}`} type="checkbox" checked={done} />
-        <label htmlFor={`wish${i}`}>{text}</label>
-      </li>
+        onDoneChange={(value) => {
+          const updatedWishes = [...wishes]; // copia para no modificar el original
+          updatedWishes[i].done = value;
+          onWishesChange(updatedWishes);
+        }}
+      />
     ))}
   </ul>
 );
 
 WishList.propTypes = {
-  wishes: PropTypes.arrayOf(PropTypes.shape({
-    done: PropTypes.bool,
-    text: PropTypes.string,
-  })),
+  wishes: PropTypes.arrayOf(PropTypes.shape(WishItem.propTypes)),
+  onWishesChange: PropTypes.func,
 };
 
 WishList.defaultProps = {
   wishes: [],
+  onWishesChange: () => {},
 };
 
 export default WishList;

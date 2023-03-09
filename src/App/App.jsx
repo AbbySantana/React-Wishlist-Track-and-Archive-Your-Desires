@@ -20,8 +20,13 @@ const App = () => {
     <div className="app">
       <h1>My Wishlist</h1>
       <WishInput onNewWish={(wish) => setWishes([wish, ...wishes])} />
-      <WishList wishes={wishes} />
-      <button className="wish-clear" type="button">
+      <WishList wishes={wishes} onWishesChange={setWishes} />
+      <button
+        className="wish-clear"
+        type="button"
+        // eslint-disable-next-line arrow-parens
+        onClick={() => setWishes(wishes.filter(wish => !wish.done))}
+      >
         Archive done
       </button>
     </div>

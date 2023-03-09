@@ -29978,7 +29978,7 @@ var define;
 	}
 }());
 
-},{}],"src/App/WishList/WishList.jsx":[function(require,module,exports) {
+},{}],"src/App/WishItem/WishItem.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29986,45 +29986,107 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _react = _interopRequireDefault(require("react"));
-var _classnames = _interopRequireDefault(require("classnames"));
 var _propTypes = _interopRequireDefault(require("prop-types"));
+var _classnames = _interopRequireDefault(require("classnames"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 // eslint-disable-next-line import/no-extraneous-dependencies
 
 // eslint-disable-next-line react/function-component-definition
+var WishItem = function WishItem(_ref) {
+  var done = _ref.done,
+    text = _ref.text,
+    id = _ref.id,
+    onDoneChange = _ref.onDoneChange;
+  return /*#__PURE__*/_react.default.createElement("li", {
+    className: (0, _classnames.default)('wish-list__item', {
+      'wish-list__item--done': done
+    })
+  }, /*#__PURE__*/_react.default.createElement("input", {
+    id: id,
+    checked: done,
+    onChange: function onChange(e) {
+      return onDoneChange(e.target.checked);
+    },
+    type: "checkbox"
+  }), /*#__PURE__*/_react.default.createElement("label", {
+    htmlFor: id
+  }, text));
+};
+WishItem.propTypes = {
+  done: _propTypes.default.bool,
+  text: _propTypes.default.string,
+  id: _propTypes.default.string,
+  onDoneChange: _propTypes.default.func
+};
+WishItem.defaultProps = {
+  done: false,
+  text: '',
+  id: '',
+  onDoneChange: function onDoneChange() {}
+};
+var _default = WishItem;
+exports.default = _default;
+},{"react":"node_modules/react/index.js","prop-types":"node_modules/prop-types/index.js","classnames":"node_modules/classnames/index.js"}],"src/App/WishItem/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _WishItem = _interopRequireDefault(require("./WishItem"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _default = _WishItem.default;
+exports.default = _default;
+},{"./WishItem":"src/App/WishItem/WishItem.jsx"}],"src/App/WishList/WishList.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _react = _interopRequireDefault(require("react"));
+var _propTypes = _interopRequireDefault(require("prop-types"));
+var _WishItem = _interopRequireDefault(require("../WishItem"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+// eslint-disable-next-line react/function-component-definition
 var WishList = function WishList(_ref) {
-  var wishes = _ref.wishes;
+  var wishes = _ref.wishes,
+    onWishesChange = _ref.onWishesChange;
   return /*#__PURE__*/_react.default.createElement("ul", {
     className: "wish-list"
   }, wishes.map(function (_ref2, i) {
     var text = _ref2.text,
       done = _ref2.done;
-    return /*#__PURE__*/_react.default.createElement("li", {
-      key: text,
-      className: (0, _classnames.default)('wish-list__item', {
-        'wish-list__item--done': done
-      })
-    }, /*#__PURE__*/_react.default.createElement("input", {
+    return /*#__PURE__*/_react.default.createElement(_WishItem.default, {
+      text: text,
+      done: done,
       id: "wish".concat(i),
-      type: "checkbox",
-      checked: done
-    }), /*#__PURE__*/_react.default.createElement("label", {
-      htmlFor: "wish".concat(i)
-    }, text));
+      key: text,
+      onDoneChange: function onDoneChange(value) {
+        var updatedWishes = _toConsumableArray(wishes); // copia para no modificar el original
+        updatedWishes[i].done = value;
+        onWishesChange(updatedWishes);
+      }
+    });
   }));
 };
 WishList.propTypes = {
-  wishes: _propTypes.default.arrayOf(_propTypes.default.shape({
-    done: _propTypes.default.bool,
-    text: _propTypes.default.string
-  }))
+  wishes: _propTypes.default.arrayOf(_propTypes.default.shape(_WishItem.default.propTypes)),
+  onWishesChange: _propTypes.default.func
 };
 WishList.defaultProps = {
-  wishes: []
+  wishes: [],
+  onWishesChange: function onWishesChange() {}
 };
 var _default = WishList;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","classnames":"node_modules/classnames/index.js","prop-types":"node_modules/prop-types/index.js"}],"src/App/WishList/index.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","prop-types":"node_modules/prop-types/index.js","../WishItem":"src/App/WishItem/index.js"}],"src/App/WishList/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30086,10 +30148,18 @@ var App = function App() {
       return setWishes([wish].concat(_toConsumableArray(wishes)));
     }
   }), /*#__PURE__*/_react.default.createElement(_WishList.default, {
-    wishes: wishes
+    wishes: wishes,
+    onWishesChange: setWishes
   }), /*#__PURE__*/_react.default.createElement("button", {
     className: "wish-clear",
     type: "button"
+    // eslint-disable-next-line arrow-parens
+    ,
+    onClick: function onClick() {
+      return setWishes(wishes.filter(function (wish) {
+        return !wish.done;
+      }));
+    }
   }, "Archive done"));
 };
 var _default = App;
@@ -30138,7 +30208,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64772" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49248" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
