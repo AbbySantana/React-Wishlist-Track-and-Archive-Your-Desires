@@ -52,6 +52,15 @@ height: 2rem;
 .wish-list__item--done label {
 text-decoration: line-through;
 }
+
+.wish-list__item--warning  {
+color: rgb(233, 211, 12);
+}
+
+.wish-list__item--danger  {
+color: crimson;
+}
+
 .wish-clear {
 width: 100%;
 padding: 0.5rem;
